@@ -6,13 +6,13 @@
 
 ## TODO
 
-1. add `numba` to speed up python scripts
+- [x] add `numba` to speed up python scripts
 
-2. boundary problem, see img below
+- [x] boundary problem, see img below(fixed, in`./fouier_ser.py`)
 
-3. how to be faster
+- [ ] how to be faster (in the algorithm)
 
-![boundary problem](Figure_1.png)
+![boundary problem](Figure_python.png)
 
 
 ## digression
