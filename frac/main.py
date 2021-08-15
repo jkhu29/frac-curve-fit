@@ -23,7 +23,7 @@ def mae(x, y):
 
 N: int = 20
 M: int = 10 ** 4 + 1
-x = np.linspace(0, 1, M)  # 分别代表最小，最大，数量， 生成一个等差数列
+x = np.linspace(0, 1, M)
 a = 5
 b = 0.5
 
@@ -79,13 +79,3 @@ for b in range(1, 10, 1):
     print('=====MAE=====')
     print(mae(y, tt))
     print(mae(y, _tt))
-
-
-# x = x.transpose()
-# y = y.transpose()
-# Iy = Iy.transpose()
-
-# print(np.column_stack((x, y, Iy)))
-
-# output = pd.DataFrame(np.column_stack((x, y, Iy)))
-# output.to_csv('worksheet.csv')
