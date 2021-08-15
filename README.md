@@ -12,8 +12,6 @@
 
 - [ ] how to be faster (in the algorithm)
 
-![boundary problem](Figure_python.png)
-
 
 ## digression
 
