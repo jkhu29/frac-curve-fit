@@ -44,21 +44,6 @@ def frac_int(x, y, v):
         Iy[i] = torch.sum(y1) + y2
     Iy = Iy / math.gamma(v)
     Iy = Iy.cpu()
-
-    # else:
-    #     Iy = y * 0
-    #
-    #     Iy[1] = y[1] / 2 / v * h ** v
-    #     for i in range(2, M):
-    #         L1 = torch.linspace(i+1, i+1, i-1)
-    #         L2 = torch.linspace(1, i, i)
-    #         y1 = (torch.mul((L1 * h - L2[1:i] * h)
-    #                         ** (v-1), y[1:i])
-    #               + torch.mul((L1 * h - L2[0:i-1] * h) ** (v-1), y[0:i-1])) / 2 * h
-    #         y2 = (y[i] + y[i-1]) / 2 / v * h ** v
-    #         Iy[i] = torch.sum(y1) + y2
-    #     Iy = Iy / math.gamma(v)
-
     Iy = Iy.numpy()
     return Iy
 
@@ -83,19 +68,9 @@ def frac_dif(x, y, u, ans):
     y = torch.from_numpy(y)
     if torch.cuda.is_available():
         y = y.to('cuda')
-    # y = (y[2:M] * 3 - y[1:M-1] * 4 + y[0:M-2]) / 2 / h
-    # y = torch.hstack((torch.tensor([0, ans[1]]), y))
     dy = (y[2:] - y[:-2]) / 2 / h
     y = torch.hstack((torch.tensor(0).to(device), dy, torch.tensor(ans[-1]).to(device)))
-    # for i in range(0, M - 2):
-    #     y[i] = (y[i+2] - y[i]) / 2 / h
-
-    # y = y[0:-2]
-    # y = torch.diff(y)
-    # y = y / h
     if torch.cuda.is_available():
         y = y.cpu()
-    # y = torch.hstack((torch.tensor(0), y))
-    # y = torch.hstack((y, torch.tensor(ans[-1])))
     y = y.numpy()
     return y
