@@ -25,7 +25,6 @@ def bes_func(x, a, b):
     :return: Besicovitch函数 Numpy行向量
     """
     y = np.zeros_like(x)
-
     for i in range(len(x)):
         y += a[i] ** (-b * (i+1)) * np.sin(x * a[i] ** (i+1))
     return y
@@ -34,7 +33,7 @@ def bes_func(x, a, b):
 def rand_func(x, C):
     """
     :param x: 自变量 Numpy行向量
-    :param C: 随机数范围 正实数
+    :param C: 随机数范围 正实数(<1)
     :return: 随机分形函数 Numpy行向量
     """
     y = np.zeros_like(x)

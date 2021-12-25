@@ -1,5 +1,6 @@
 # ——*——coding:utf-8——*——
 # author: hhhfccz time:2021/5/17 14:19
+import math
 import numpy as np
 
 
@@ -24,18 +25,39 @@ def gamma(x, error=1e-5):
 
 
 def L2norm(x, y):
+    length = x.shape[0]
     h = (x[-1] - x[0]) / (len(x) - 1)
+    if isinstance(h, np.ndarray):
+        for i in range(len(h)):
+            h[i] = (np.max(x[:, i]) - np.min(x[:, i])) / (length - 1)
     y = y ** 2
-    L2 = np.sum(y[0:-2] + y[1:-1]) / 2 * h
+    if isinstance(h, np.ndarray):
+        L2 = np.zeros_like(h)
+        for i in range(len(h)):
+            L2[i] = np.sum(y[0:-2] + y[1:-1]) / 2 * h[i]
+    else:
+        L2 = np.sum(y[0:-2] + y[1:-1]) / 2 * h
     return np.sqrt(L2)
 
 
 def diff(x, y, method=2):
     assert method in [2, 3], "method should be 2 or 3"
-    h = (x[-1] - x[0]) / (len(x) - 1)
+    length = x.shape[0]
+    h = (x[-1] - x[0]) / (length - 1)
+    Dy = np.zeros_like(x)
+    Dy2 = np.zeros_like(y)
     if method == 2:
-        Dy = (y[2:] - y[0:-2]) / 2 / h
-        return np.hstack((0, Dy, (y[-1] - y[-2]) / h))
+        if isinstance(h, np.ndarray):
+            for i in range(len(h)):
+                temp = (y[2:] - y[0:-2]) / 2 / h[i]  # shape: (length-2, )
+                Dy[:, i] = np.hstack((0, temp, (y[-1] - y[-2]) / h[i]))
+            for i in range(length):
+                Dy2[i] = np.sum(Dy[i, :])
+            return Dy2
+        else:
+            temp = (y[2:] - y[0:-2]) / 2 / h
+            Dy = np.hstack((0, temp, (y[-1] - y[-2]) / h))
+            return Dy
     elif method == 3:
         Dy = (y[2:] * 3 - y[1:-1] * 4 + y[0:-2]) / 2 / h
         return np.hstack((0, (y[-1] - y[0]) / h, Dy))
